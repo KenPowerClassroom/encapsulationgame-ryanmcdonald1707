@@ -52,6 +52,12 @@ public:
         std::cout << name << "take damage " << damage << "\n";
     }
 
+    void attackTarget(Character *t_target)
+    {
+        std::cout << name << " attacks " << t_target->getName() << " with " << getWeapon()->getName() << "\n";
+        t_target->takeDamage(getWeapon()->getDamage() * strength);
+        std::cout << t_target->getName() << " health: " << t_target->getHealth() << "\n";
+    }
 };
 
 class Player : public Character {
@@ -92,13 +98,10 @@ public:
             Weapon * enemyWeapon = enemy.getWeapon();
 
             if (playerWeapon != nullptr && enemyWeapon != nullptr) {
-                std::cout << player.getName() << " attacks " << enemy.getName() << " with " << playerWeapon->getName() << "\n";
-				enemy.takeDamage(playerWeapon->getDamage() * player.strength);
-                std::cout << enemy.getName() << " health: " << enemy.getHealth() << "\n";
 
-                std::cout << enemy.getName() << " attacks " << player.getName() << " with " << enemyWeapon->getName() << "\n";
-                player.takeDamage(enemyWeapon->getDamage() * enemy.strength);
-                std::cout << player.getName() << " health: " << player.getHealth() << "\n";
+                player.attackTarget(&enemy);
+                
+                enemy.attackTarget(&player);
             }
             else {
                 std::cout << "Weapon not equipped. Cannot fight.\n";
